@@ -1,3 +1,6 @@
+-- og configuration file
+-- to reload this configuration file use : Mod + Ctrl + r  
+
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")

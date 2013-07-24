@@ -1,6 +1,10 @@
--- og
+-- og configuration file
 -- to reload this configuration file use : Mod + Ctrl + r  
 
+-- Use of the precious library
+-- # cd ~/.config/awesome
+-- # git clone git://gw-computing.net/precious.git
+--
 -- precious library
 -- precious.cpu : cpuinfo, cputemp
 -- precious.battery : batinfo
@@ -20,9 +24,6 @@ require("naughty")
 require("debian.menu")
 
 -- og widget mywibox
--- Use of the precious library
--- # cd ~/.config/awesome
--- # git clone git://gw-computing.net/precious.git
 require("precious.sound")
 require("precious.wlan")
 require("precious.battery")
@@ -92,7 +93,7 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
 end
 -- }}}
 
@@ -266,6 +267,10 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
+    -- og key bindings
+    awful.key({ modkey, "Shift" },   "m",     function () awful.util.spawn("thunderbird") end),
+    awful.key({ modkey, "Shift" },   "i",     function () awful.util.spawn("firefox") end),
+
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
@@ -275,10 +280,8 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end),
+              end)
 
-    -- og key bindings
-    awful.key({ modkey },            "i",     function () awful.util.spawn("firefox") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -366,8 +369,11 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+    { rule = { class = "Firefox" },
+      properties = { tag = tags[1][2] } },
+    -- Set Thunderbord to always map on tags number r9 of screen 1.
+    { rule = { class = "Thunderbird" },
+      properties = { tag = tags[1][9] } },
 }
 -- }}}
 
