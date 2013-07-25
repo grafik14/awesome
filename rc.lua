@@ -1,16 +1,6 @@
 -- og configuration file
 -- to reload this configuration file use : Mod + Ctrl + r  
 
--- Use of the precious library
--- # cd ~/.config/awesome
--- # git clone git://gw-computing.net/precious.git
---
--- precious library
--- precious.cpu : cpuinfo, cputemp
--- precious.battery : batinfo
--- precious.sound : tb_volume
--- precious.wlan : tb_volume
-
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
@@ -24,10 +14,10 @@ require("naughty")
 require("debian.menu")
 
 -- og widget mywibox
-require("precious.sound")
-require("precious.wlan")
-require("precious.battery")
-require("precious.cpu")
+-- require("obvious.cpu")
+require("obvious.volume_alsa")
+require("obvious.wlan")
+require("obvious.battery")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -92,7 +82,8 @@ layouts =
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
-    -- Each screen has its own tag table.
+    -- Each screen has its own tag table
+    -- og default layout is "tile"
     tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
 end
 -- }}}
@@ -201,10 +192,9 @@ for s = 1, screen.count() do
         s == 1 and mysystray or nil,
         mytextclock,
 	-- og widget
-	tb_volume,
-	cpuinfo,
-	batinfo,
-	wifiinfo,
+	obvious.volume_alsa(),
+	obvious.wlan(),
+	obvious.battery(),
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -268,7 +258,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- og key bindings
-    awful.key({ modkey, "Shift" },   "m",     function () awful.util.spawn("thunderbird") end),
+    awful.key({ modkey, "Shift" },   "m",     function () awful.util.spawn("icedove") end),
     awful.key({ modkey, "Shift" },   "i",     function () awful.util.spawn("firefox") end),
 
     -- Prompt
@@ -281,7 +271,6 @@ globalkeys = awful.util.table.join(
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
               end)
-
 )
 
 clientkeys = awful.util.table.join(
@@ -368,12 +357,17 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
+    -- og mapping
+    -- Set Firefox/Iceweasel to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
-      properties = { tag = tags[1][2] } },
-    -- Set Thunderbord to always map on tags number r9 of screen 1.
+       properties = { tag = tags[1][2] } },
+    { rule = { class = "Iceweasel" },
+       properties = { tag = tags[1][2] } },
+    -- Set Thunderbird/Icedove to always map on tags number 9 of screen 1.
     { rule = { class = "Thunderbird" },
-      properties = { tag = tags[1][9] } },
+       properties = { tag = tags[1][9] } },
+    { rule = { class = "Icedove" },
+       properties = { tag = tags[1][9] } }
 }
 -- }}}
 

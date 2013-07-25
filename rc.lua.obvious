@@ -82,8 +82,9 @@ layouts =
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
-    -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    -- Each screen has its own tag table
+    -- og default layout is "tile"
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
 end
 -- }}}
 
@@ -256,6 +257,10 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
+    -- og key bindings
+    awful.key({ modkey, "Shift" },   "m",     function () awful.util.spawn("icedove") end),
+    awful.key({ modkey, "Shift" },   "i",     function () awful.util.spawn("firefox") end),
+
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
@@ -265,10 +270,7 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end),
-
-    -- og key bindings
-    awful.key({ modkey },            "i",     function () awful.util.spaw("iceweasel") end)
+              end)
 )
 
 clientkeys = awful.util.table.join(
@@ -355,9 +357,17 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+    -- og mapping
+    -- Set Firefox/Iceweasel to always map on tags number 2 of screen 1.
+    { rule = { class = "Firefox" },
+       properties = { tag = tags[1][2] } },
+    { rule = { class = "Iceweasel" },
+       properties = { tag = tags[1][2] } },
+    -- Set Thunderbird/Icedove to always map on tags number 9 of screen 1.
+    { rule = { class = "Thunderbird" },
+       properties = { tag = tags[1][9] } },
+    { rule = { class = "Icedove" },
+       properties = { tag = tags[1][9] } }
 }
 -- }}}
 
