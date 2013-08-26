@@ -1,4 +1,5 @@
 -- og configuration file
+-- obvious library
 -- to reload this configuration file use : Mod + Ctrl + r  
 
 -- Standard awesome library
@@ -14,10 +15,10 @@ require("naughty")
 require("debian.menu")
 
 -- og widget mywibox
--- require("obvious.cpu")
 require("obvious.volume_alsa")
-require("obvious.wlan")
 require("obvious.battery")
+require("obvious.wlan")
+require("obvious.cpu")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -80,11 +81,15 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+	names = { "main", "dev", "tex", "img", "mus", "web", "mail" },
+	layouts = { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2]}
+	}
+
 for s = 1, screen.count() do
     -- Each screen has its own tag table
     -- og default layout is "tile"
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[2])
+    tags[s] = awful.tag(tags.names, s, tags.layouts)
 end
 -- }}}
 
@@ -257,9 +262,11 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
-    -- og key bindings
-    awful.key({ modkey, "Shift" },   "m",     function () awful.util.spawn("icedove") end),
-    awful.key({ modkey, "Shift" },   "i",     function () awful.util.spawn("firefox") end),
+    -- og key bindings : Mod1=Alt
+    awful.key({ modkey, "Mod1" },   "m",     function () awful.util.spawn("icedove") end),
+    awful.key({ modkey, "Mod1" },   "i",     function () awful.util.spawn("firefox") end),
+    awful.key({ modkey, "Mod1" },   "s",     function () awful.util.spawn("pm-suspend") end),
+    awful.key({ modkey, "Mod1" },   "l",     function () awful.util.spawn("xscreensaver-command -lock") end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
@@ -360,14 +367,14 @@ awful.rules.rules = {
     -- og mapping
     -- Set Firefox/Iceweasel to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
-       properties = { tag = tags[1][2] } },
+       properties = { tag = tags[1][6] } },
     { rule = { class = "Iceweasel" },
-       properties = { tag = tags[1][2] } },
+       properties = { tag = tags[1][6] } },
     -- Set Thunderbird/Icedove to always map on tags number 9 of screen 1.
     { rule = { class = "Thunderbird" },
-       properties = { tag = tags[1][9] } },
+       properties = { tag = tags[1][7] } },
     { rule = { class = "Icedove" },
-       properties = { tag = tags[1][9] } }
+       properties = { tag = tags[1][7] } }
 }
 -- }}}
 
@@ -405,3 +412,4 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 -- start a fullscreen terminal
 -- awful.util.spawn("xfce4-terminal --fullscreen &")
 os.execute ("xfce4-terminal --maximize --hide-borders &")
+os.execute ("xscreensaver -nosplash &")
