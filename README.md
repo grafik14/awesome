@@ -34,7 +34,7 @@ To view local changes:
 To replace local changes:
 -------------------------
 
-  git checkout -- <filename>
+  git checkout -- filename
 
 
 To cancel all local changes and commits and fetch the latest version from the remote repository:
